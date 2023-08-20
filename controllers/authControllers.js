@@ -103,6 +103,7 @@ export const loginController = async (req, res) => {
         phone: user.phone,
         adress: user.adress,
         answer: user.answer,
+        role: user.role,
       },
       token,
     });

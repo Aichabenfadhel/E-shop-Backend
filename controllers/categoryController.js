@@ -63,7 +63,7 @@ export const getAllCategoriesController= async (req,res) =>{
     const category= await CategoryModel.find({})
     res.status(200).send({
       success:true,
-      message:"Geeting categories successfully",
+      message:"Getting categories successfully",
       category,
     })
     

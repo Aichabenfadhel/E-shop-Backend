@@ -1,4 +1,5 @@
 import ProductModel from "../models/ProductModel.js";
+import categorySchema from "../models/CategoryModel.js";
 import slugify from "slugify";
 import fs from "fs";
 
@@ -256,6 +257,69 @@ export const productListController = async (req, res) => {
       success: false,
       error,
       message: "Error in per page Products",
+    });
+  }
+};
+
+export const searchProductController = async (req, res) => {
+  try {
+    const { keyword } = req.params;
+    const result = await ProductModel.find({
+      $or: [
+        { name: { $regex: keyword, $options: "i" } },
+        { description: { $regex: keyword, $options: "i" } },
+      ],
+    }).select("-photo");
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in searching Product",
+    });
+  }
+};
+
+export const similarProductController = async (req, res) => {
+  try {
+    const { pid, cid } = req.params;
+    const products = await ProductModel.find({
+      category: cid,
+      _id: { $ne: pid },
+    })
+      .select("-photo")
+      .limit(3)
+      .populate("category");
+    res.status(200).send({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in similar Product",
+    });
+  }
+};
+
+export const productCategoryController = async (req, res) => {
+  try {
+    const category = await categorySchema.findOne({ slug: req.params.slug });
+    const product = await ProductModel.find({ category }).populate("category");
+    res.status(200).send({
+      success: true,
+      category,
+      product,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error in category wise Product",
     });
   }
 };

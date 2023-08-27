@@ -10,7 +10,10 @@ import {
   updateProductController,
   productFiltersController,
   productCountController,
-  productListController
+  productListController,
+  searchProductController,
+  similarProductController,
+  productCategoryController
 } from "../controllers/productControllers.js";
 
 const router = express.Router();
@@ -52,6 +55,15 @@ router.get('/product-count',productCountController)
 
 //product per page
 router.get('/product-list/:page',productListController)
+
+// similar product 
+router.get('/similar-products/:pid/:cid',similarProductController)
+
+// search product 
+router.get('/search/:keyword',searchProductController)
+
+// category - product 
+router.get('/product-category/:slug',productCategoryController)
 
 //delete product
 router.delete("/delete-product/:id", deleteProductController);

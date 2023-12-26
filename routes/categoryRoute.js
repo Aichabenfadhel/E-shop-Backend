@@ -22,7 +22,7 @@ router.put(
   isAdmin,
   updateCategoryController
 );
-router.get("/allCategories", getAllCategoriesController);
+router.get("/allcategories", getAllCategoriesController);
 router.get("/get-category/:slug", getCategoryController);
 router.delete("/delete-category/:id",requireSignIn,isAdmin,deleteCategoryController)
 export default router;
